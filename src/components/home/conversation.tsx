@@ -2,18 +2,28 @@ import { formatDate } from "@/lib/utils";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import { MessageSeenSvg } from "@/lib/svgs";
 import { ImageIcon, Users, VideoIcon } from "lucide-react";
+import { useQuery } from "convex/react";
+import { api } from "../../../convex/_generated/api";
+import { useConversationStore } from "@/store/chat-store";
 
 const Conversation = ({ conversation }: { conversation: any }) => {
-	const conversationImage = conversation.groupImage;
-	const conversationName = conversation.groupName || "Private Chat";
+	const conversationImage = conversation.groupImage || conversation.image;
+	const conversationName = conversation.groupName || conversation.name;
 	const lastMessage = conversation.lastMessage;
 	const lastMessageType = lastMessage?.messageType;
-	//
-	const authUser = { _id: "user1" };
+	const me = useQuery(api.users.getMe);
+
+	const { setSelectedConversation, selectedConversation } = useConversationStore();
+	const activeBgClass = selectedConversation?._id === conversation._id;
 
 	return (
 		<>
-			<div className={`flex gap-2 items-center p-3 hover:bg-chat-hover cursor-pointer `}>
+			<div
+				className={`flex gap-2 items-center p-3 hover:bg-chat-hover cursor-pointer
+					${activeBgClass ? "bg-gray-tertiary" : ""}
+				`}
+				onClick={() => setSelectedConversation(conversation)}
+			>
 				<Avatar className='border border-gray-900 overflow-visible relative'>
 					{conversation.isOnline && (
 						<div className='absolute top-0 right-0 w-2.5 h-2.5 bg-green-500 rounded-full border-2 border-foreground' />
@@ -31,7 +41,7 @@ const Conversation = ({ conversation }: { conversation: any }) => {
 						</span>
 					</div>
 					<p className='text-[12px] mt-1 text-gray-500 flex items-center gap-1 '>
-						{lastMessage?.sender === authUser?._id ? <MessageSeenSvg /> : ""}
+						{lastMessage?.sender === me?._id ? <MessageSeenSvg /> : ""}
 						{conversation.isGroup && <Users size={16} />}
 						{!lastMessage && "Say Hi!"}
 						{lastMessageType === "text" ? (
