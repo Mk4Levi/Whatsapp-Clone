@@ -24,7 +24,7 @@
 - [Tailwind CSS](https://tailwindcss.com/) for styling
 - [TypeScript](https://www.typescriptlang.org/) just to feel cool
 
-## Deploy Your Own
+## Deploy Locally
 
 You can deploy this app by setting up the following services and adding their environment variables:
 
