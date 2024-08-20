@@ -12,16 +12,79 @@
 import type {
   DataModelFromSchemaDefinition,
   DocumentByName,
+  DataModel,
   TableNamesInDataModel,
   SystemTableNames,
 } from "convex/server";
+import { v, Id } from "convex/values";
 import type { GenericId } from "convex/values";
 import schema from "../schema.js";
 
 /**
  * The names of all of your Convex tables.
  */
-export type TableNames = TableNamesInDataModel<DataModel>;
+// Define the Users table
+type User = {
+  _id: Id<"users">;
+  _creationTime: number;
+  name?: string;
+  email: string;
+  image: string;
+  tokenIdentifier: string;
+  isOnline: boolean;
+};
+
+// Define the Products table
+type Product = {
+  _id: Id<"products">;
+  _creationTime: number;
+  name: string;
+  price: number;
+};
+
+// Define the full DataModel
+export type MyDataModel = {
+  users: {
+    document: User;
+    indexes: {
+      by_email: { by: "email"; unique: true };
+    };
+  };
+  products: {
+    document: Product;
+    indexes: {};
+  };
+};
+
+// Export the DataModel so it can be used in your Convex server functions
+export const dataModel: DataModel<MyDataModel> = {
+  users: {
+    document: {
+      _id: v.id("users"),
+      _creationTime: v.number(),
+      name: v.optional(v.string()),
+      email: v.string(),
+      image: v.string(),
+      tokenIdentifier: v.string(),
+      isOnline: v.boolean(),
+    },
+    indexes: {
+      by_email: { by: "email", unique: true },
+    },
+  },
+  products: {
+    document: {
+      _id: v.id("products"),
+      _creationTime: v.number(),
+      name: v.string(),
+      price: v.number(),
+    },
+    indexes: {},
+  },
+};
+
+// Use the table names in your server functions
+export type TableName = TableNamesInDataModel<MyDataModel>;
 
 /**
  * The type of a document stored in Convex.
@@ -29,7 +92,7 @@ export type TableNames = TableNamesInDataModel<DataModel>;
  * @typeParam TableName - A string literal type of the table name (like "users").
  */
 export type Doc<TableName extends TableNames> = DocumentByName<
-  DataModel,
+  MyDataModel,
   TableName
 >;
 
