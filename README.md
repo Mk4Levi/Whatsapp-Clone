@@ -9,7 +9,7 @@
 
 ### Project Link:
 
-[Visit Project's Live Web-App](https://whtsapp-clone.vercel.app/)
+[Visit Project's Live Web-App](https://whatsapp-clone.vercel.app/)
 
 <p align="center">
   <a href="#tech-stack"><strong>Tech Stack</strong></a> ·
