@@ -7,6 +7,10 @@
  This WhatsApp Clone is a real-time messaging application built using the MERN stack, with WebSockets enabling instant communication. The project delivers a seamless user experience, mirroring the functionality of a modern messaging platform. 
 </p>
 
+### Project Link:
+
+[Visit Project's Live Web-App](https://whtsapp-clone.vercel.app/)
+
 <p align="center">
   <a href="#tech-stack"><strong>Tech Stack</strong></a> ·
   <a href="#deploy-your-own"><strong>Deploy Your Own</strong></a> ·
